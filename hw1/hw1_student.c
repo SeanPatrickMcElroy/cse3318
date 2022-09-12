@@ -17,21 +17,30 @@ void print_1D(int sz, int * arr){
 		- NULL if all elements of arr are greater or equal to thres. In this case it does not allocate any memory, and sets content of sz_res to 0.
 */
 int* get_scores_below(int thresh, int sz_arr, int * arr, int* sz_res){
+	(*sz_res)++;
+	if(arr == NULL || sz_res == NULL)
+		return NULL;
+	int correctArr[sz_arr];
 	for(int i=0;i<sz_arr;i++){
-		if(arr[i] > thresh)
-			arr[i]=arr[i+1]; 
+		if(arr[i]<=thresh){
+			correctArr[*sz_res]=arr[i];
+			(*sz_res)++;
+		}
+ 	}
+	if(correctArr == NULL)
+		return NULL;
+	int *dynamicArr  = (int *)malloc(*sz_res * sizeof(int));
+	for(int i=0;i<*sz_res;i++){
+		dynamicArr[i]=correctArr[i];
 	}
-	if(sizeof(arr)==NULL)
-		return sz_arr=0;
-	size_t sz_arr =sizeof(arr)/sizeof(int);
-	int *dynamicArr = (int *)malloc(*sz_res * sizeof(int));
 	return dynamicArr;
 }
 
 
 void update_min_max(int num_rows, int num_cols, int* arr2D[], int* arr_min, int* arr_max){
 	int r,c;
-	
+	*arr_min=arr2D[0][0];
+	*arr_max=arr2D[0][0];
 	for (r = 0; r<num_rows; r++){
 		for(c=0; c<num_cols; c++){
 			if(arr2D[r][c]>*arr_max)
@@ -44,9 +53,8 @@ void update_min_max(int num_rows, int num_cols, int* arr2D[], int* arr_min, int*
 
 
 // improve this code to print as required in the homework
-void print_2D(int num_rows, int num_cols, int* arr2D[]){	
+void print_2D(int num_rows, int num_cols, int* arr2D[]){
 	int r,c;
-	int *arr_min,*arr_max;
 	printf("\n");
 	for (r = 0; r<num_rows; r++){
 		printf("%8d|",r);
@@ -55,7 +63,4 @@ void print_2D(int num_rows, int num_cols, int* arr2D[]){
 		}
 		printf("\n");
 	}
-	update_min_max(num_rows,num_cols,&arr2D,&arr_min,&arr_max);
-	printf("min value: %8d, max value: %8d",arr_min,arr_max);	
 }
-
